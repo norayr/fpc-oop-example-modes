@@ -39,4 +39,5 @@ test_iso_shapes: shapes/test_iso_shapes.pas
 	$(FPC) $(COMMON) $(ISOFLAGS) $<
 
 clean:
-	rm -f *.o *.ppu *.a
+	rm -f shapes/*.o shapes/*.ppu
+	rm -f vectors/*.o vectors/*.ppu
