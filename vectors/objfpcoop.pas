@@ -1,17 +1,18 @@
-unit advrecoop;
+unit objfpcoop;
 
-{$mode objfpc}{$H+}{$modeswitch advancedrecords}
+{$mode objfpc}{$H+}
 
 interface
 
 type
-  TVec2 = record
+  { Delphi-style class (reference type, heap-allocated) }
+  TVec2 = class
   private
     FX, FY: Double;
   public
     constructor Create(AX, AY: Double);
     function Length: Double;
-    class operator +(const a, b: TVec2) r: TVec2;  // <-- name result "r"
+    function Add(const B: TVec2): TVec2;  // returns a NEW instance (sum)
     property X: Double read FX write FX;
     property Y: Double read FY write FY;
   end;
@@ -22,6 +23,7 @@ uses Math;
 
 constructor TVec2.Create(AX, AY: Double);
 begin
+  inherited Create;
   FX := AX; FY := AY;
 end;
 
@@ -30,11 +32,11 @@ begin
   Result := Sqrt(FX*FX + FY*FY);
 end;
 
-class operator TVec2.+(const a, b: TVec2) r: TVec2;  // <-- qualify with TVec2
+function TVec2.Add(const B: TVec2): TVec2;
 begin
-  r.FX := a.FX + b.FX;
-  r.FY := a.FY + b.FY;
+  if B = nil then
+    Exit(TVec2.Create(FX, FY));
+  Result := TVec2.Create(FX + B.FX, FY + B.FY);
 end;
 
 end.
-
